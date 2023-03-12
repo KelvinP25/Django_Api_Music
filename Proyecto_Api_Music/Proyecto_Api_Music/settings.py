@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-ux)qe((33o7_vbi$p2w_bz*w$4$%-favs)kod0jij-r0cnfb3o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',  # localhost
+    '10.0.0.9',  # dirección IP local de tu computadora
+]
 
 
 # Application definition
@@ -38,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'myapp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -105,6 +110,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    # Agrega aquí otros orígenes permitidos si los hay
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -140,6 +149,3 @@ CELERY_RESULT_SERIALIZER ='json'
 CELERY_TASK_SERIALIZER = 'json'
 #CELERY_TIMEZONE ='American/Mexico'
 '''
-
-
-

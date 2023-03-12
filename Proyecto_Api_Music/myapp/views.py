@@ -4,7 +4,9 @@ from .models import Vitrola, WaitList
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-import json, os, random
+import json
+import os
+import random
 import asyncio
 # Create your views here.
 
@@ -70,28 +72,14 @@ class WaitListView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
-        if (id > 0):
-            music = list(Vitrola.objects.filter(pk=id).values())
-            if len(music) > 0:
-                musi = music[0]
-                WaitList.objects.create(
-                    artist=musi['artist'],
-                    titulo=musi['titulo'],
-                    track=musi['track']
-                )
-                data = {'message': "The music is added to the waitlist"}
-                return JsonResponse(data)
-            else:
-                data = {'message': "Music not found.."}
-                return JsonResponse(data)
-        else:
+    def get(self, request):
             music = list(WaitList.objects.values())
             if len(music) > 0:
                 data = {'message': "Success", 'music': music}
+                return JsonResponse(data)
             else:
                 data = {'message': "Music not found.."}
-            return JsonResponse(data)
+                return JsonResponse(data)
 
     def delete(self, request, id=0):
         music = list(WaitList.objects.filter(pk=id).values())
@@ -102,6 +90,14 @@ class WaitListView(View):
         else:
             data = {'message': 'Music not found..'}
         return JsonResponse(data)
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        WaitList.objects.create(
+            artist=jd['artist'], titulo=jd['titulo'], track=jd['track'])
+        data = {'message': "Success"}
+        return JsonResponse(data)
+
 
 '''
 async def play_songs(self):
